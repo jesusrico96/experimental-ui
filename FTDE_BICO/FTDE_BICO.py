@@ -1,3 +1,4 @@
+import os.path
 from tkinter import *
 from openpyxl import *
 from PIL import *
@@ -17,7 +18,7 @@ median = 0
 MAD = 0
 
 
-def browseFiles():
+def browsefiles():
     global filename
     filename = filedialog.askopenfilename(initialdir=sys.path[0],
                                           title="Escolle un arquivo",
@@ -667,9 +668,9 @@ label_file_explorer = Label(top_frame,
                             fg="blue")
 
 # Etiqueta co logo do GTE
+dirname = os.path.dirname(__file__)
 photogte = PhotoImage(
-    # file=r"C:\Users\Usuario\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\gte2.png")
-    file=r"D:\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\gte2.png")
+    file=os.path.join(dirname, "imaxes", "gte2.png"))
 
 photoimagegte = photogte.subsample(3, 3)
 
@@ -679,7 +680,7 @@ label_gte = Label(top_frame2,
 # Botóns do Explorador de Arquivos
 button_explore = Button(top_frame2,
                         text="Navegar arquivos",
-                        command=browseFiles)
+                        command=browsefiles)
 
 button_exit = Button(low_frame,
                      text="Saír",
@@ -688,13 +689,12 @@ button_exit = Button(low_frame,
 
 # Etiqueta autoría
 label_auth = Label(low_frame,
-                   text="CC-BY   2021   Juan Jesús Rico Fuentes",
+                   text="GNU-GPL   2021   Juan Jesús Rico Fuentes",
                    fg="black")
 
 # Botón de guillotina
 photo = PhotoImage(
-    # file=r"C:\Users\Usuario\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\guillo.png")
-    file = r"D:\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\guillo.png")
+    file=os.path.join(dirname, "imaxes", "guillo.png"))
 
 photoimage = photo.subsample(17, 17)
 
@@ -807,8 +807,7 @@ button_v3 = Checkbutton(frameb, text='', variable=bv3, onvalue=1, offvalue=0)
 
 # Lista e widget de selección para abscisas
 opcionsa1 = ["Hora", "Tempo (s)", "Masa pellet", "Tciclo", "Ton", "Toff", "QG1", "QG2", "SumQG", "TFGR1", "TFGR2",
-             "TH1",
-             "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
+             "TH1", "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
              "Lambda Postc", "O2 Postc", "FGR", "Qrec", "Alim. pellet", "CO (ppm) corr",
              "TL Alta (1-3)", "TL Media (4-6)", "TL Baixa (7-9)"]
 
@@ -819,8 +818,7 @@ menua1 = OptionMenu(framea, variablea1, *opcionsa1)
 
 # Lista e widget de selección para ordenadas 1
 opcionso1 = ["Hora", "Tempo (s)", "Masa pellet", "Tciclo", "Ton", "Toff", "QG1", "QG2", "SumQG", "TFGR1", "TFGR2",
-             "TH1",
-             "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
+             "TH1", "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
              "Lambda Postc", "O2 Postc", "FGR", "Qrec", "Alim. pellet", "CO (ppm) corr",
              "TL Alta (1-3)", "TL Media (4-6)", "TL Baixa (7-9)"]
 
@@ -831,8 +829,7 @@ menuo1 = OptionMenu(framea, variableo1, *opcionso1)
 
 # Lista e widget de selección para ordenadas 2
 opcionso2 = ["Hora", "Tempo (s)", "Masa pellet", "Tciclo", "Ton", "Toff", "QG1", "QG2", "SumQG", "TFGR1", "TFGR2",
-             "TH1",
-             "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
+             "TH1", "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
              "Lambda Postc", "O2 Postc", "FGR", "Qrec", "Alim. pellet", "CO (ppm) corr",
              "TL Alta (1-3)", "TL Media (4-6)", "TL Baixa (7-9)"]
 
@@ -843,8 +840,7 @@ menuo2 = OptionMenu(framea, variableo2, *opcionso2)
 
 # Lista e widget de selección para Variable 1 Boxplot
 opcionsv1 = ["Hora", "Tempo (s)", "Masa pellet", "Tciclo", "Ton", "Toff", "QG1", "QG2", "SumQG", "TFGR1", "TFGR2",
-             "TH1",
-             "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
+             "TH1", "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
              "Lambda Postc", "O2 Postc", "FGR", "Qrec", "Alim. pellet", "CO (ppm) corr",
              "TL Alta (1-3)", "TL Media (4-6)", "TL Baixa (7-9)"]
 
@@ -855,8 +851,7 @@ menuv1 = OptionMenu(frameb, variable1, *opcionsv1)
 
 # Lista e widget de selección para Variable 2 Boxplot
 opcionsv2 = ["Hora", "Tempo (s)", "Masa pellet", "Tciclo", "Ton", "Toff", "QG1", "QG2", "SumQG", "TFGR1", "TFGR2",
-             "TH1",
-             "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
+             "TH1", "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
              "Lambda Postc", "O2 Postc", "FGR", "Qrec", "Alim. pellet", "CO (ppm) corr",
              "TL Alta (1-3)", "TL Media (4-6)", "TL Baixa (7-9)"]
 
@@ -867,8 +862,7 @@ menuv2 = OptionMenu(frameb, variable2, *opcionsv2)
 
 # Lista e widget de selección para Variable 3 Boxplot
 opcionsv3 = ["Hora", "Tempo (s)", "Masa pellet", "Tciclo", "Ton", "Toff", "QG1", "QG2", "SumQG", "TFGR1", "TFGR2",
-             "TH1",
-             "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
+             "TH1", "TH2", "TH3", "TC", "TACi", "TACo", "TALi", "TALo", "O2", "O2ref", "CO2corr", "NOcorr", "Lambda",
              "Lambda Postc", "O2 Postc", "FGR", "Qrec", "Alim. pellet", "CO (ppm) corr",
              "TL Alta (1-3)", "TL Media (4-6)", "TL Baixa (7-9)"]
 
