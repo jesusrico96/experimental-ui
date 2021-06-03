@@ -1,7 +1,6 @@
 import datetime
 from tkinter import *
 from openpyxl import *
-from PIL import *
 import os
 import pandas as pd
 from datetime import *
@@ -287,9 +286,8 @@ label_opc = Label(top_frame2,
                   fg="blue")
 
 # Etiqueta co logo do GTE
-photogte = PhotoImage(
-    # file=r"C:\Users\Usuario\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\gte2.png")
-    file=r"D:\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\gte2.png")
+dirname = os.path.dirname(__file__)
+photogte = PhotoImage(file=os.path.join(dirname, "imaxes", "gte2.png"))
 
 photoimagegte = photogte.subsample(3, 3)
 
@@ -326,9 +324,7 @@ button_exit = Button(low_frame,
                      command=exit)
 
 # Botón de frankenstein
-photo = PhotoImage(
-    # file=r"C:\Users\Usuario\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\puzzle.png")
-    file=r"D:\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\puzzle.png")
+photo = PhotoImage(file=os.path.join(dirname, "imaxes", "puzzle.png"))
 
 photoimage = photo.subsample(25, 25)
 

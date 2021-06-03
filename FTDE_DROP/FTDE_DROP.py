@@ -7,6 +7,7 @@ import seaborn as sns
 
 import pandas as pd
 from PIL import *
+import os
 
 # Explorador de arquivos
 from tkinter import filedialog
@@ -571,8 +572,8 @@ label_file_explorer = Label(top_frame,
                             fg="blue")
 
 # Etiqueta co logo do GTE
-photogte = PhotoImage(
-    file=r"C:\Users\Usuario\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\gte2.png")
+dirname = os.path.dirname(__file__)
+photogte = PhotoImage(file=os.path.join(dirname, "imaxes", "gte2.png"))
 
 photoimagegte = photogte.subsample(3, 3)
 
@@ -591,12 +592,12 @@ button_exit = Button(low_frame,
 
 # Etiqueta autoría
 label_auth = Label(low_frame,
-                 text="CC-BY   2021   Juan Jesús Rico Fuentes",
+                 text="GNU-GPL   2021   Juan Jesús Rico Fuentes",
                  fg="black")
 
 # Botón de guillotina
 photo = PhotoImage(
-    file=r"C:\Users\Usuario\OneDrive - Universidade de Vigo\Traballo\Machine learning\Probas Biomasa AP\Scripts\imaxes\guillo.png")
+    file=os.path.join(dirname, "imaxes", "guillo.png"))
 
 photoimage = photo.subsample(17, 17)
 

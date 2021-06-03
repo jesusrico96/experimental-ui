@@ -669,8 +669,7 @@ label_file_explorer = Label(top_frame,
 
 # Etiqueta co logo do GTE
 dirname = os.path.dirname(__file__)
-photogte = PhotoImage(
-    file=os.path.join(dirname, "imaxes", "gte2.png"))
+photogte = PhotoImage(file=os.path.join(dirname, "imaxes", "gte2.png"))
 
 photoimagegte = photogte.subsample(3, 3)
 
