@@ -16,6 +16,7 @@ M = 0
 SD = 0
 median = 0
 MAD = 0
+dirname = os.path.dirname(__file__)
 
 
 def browsefiles():
@@ -56,6 +57,7 @@ def guillotina():
         for j in range(1, mc + 1):
             c = my_sheet.cell(row=i, column=j)
             datos.cell(row=i, column=j).value = c.value
+    print("Raw target file created!")
 
     # Eliminar os datos innecesarios
     datos.delete_cols(4)
@@ -78,6 +80,7 @@ def guillotina():
     global mr2
     mr2 = vali
     datos.delete_rows(mr2 + 1, mr + 1)
+    print("End of Test located and data trimmed.")
 
     # Conversor de CO a CO (ppm) e vacía cela en caso de CO<200
     datos.cell(1, 40).value = "CO (ppm) corr"
@@ -85,6 +88,7 @@ def guillotina():
         ttl = datos.cell(i, 31).value * 10000
         if ttl > 200:
             datos.cell(i, 40).value = ttl
+    print("Corrected CO (ppm) and limited to over 200.")
 
     # Cálculo de TL promedios
     datos.cell(1, 41).value = "TL Alta (1-3)"
@@ -105,6 +109,8 @@ def guillotina():
         if tlbaixa > 0:
             datos.cell(i, 43).value = tlbaixa
 
+    print("Mean temperatures in Combustion Chamber calculated.")
+
     # Eliminación de datos sobrantes
     datos.delete_cols(20, 9)  # TL1 a TL9
     datos.delete_cols(22)  # CO
@@ -123,10 +129,12 @@ def time():
     try:
         Ti = float(Tempiniw.get())
         Tf = float(Tempfinw.get())
+        print("Time set to interval between " + str(Ti) + " and " + str(Tf) + " s.")
 
     except:
         Ti = "tiempo1"
         Tf = "tiempo2"
+        print("Time restrictions removed.")
 
 
 # Media e desv. típica no rango de tempos
@@ -134,29 +142,23 @@ def MDT():
     try:
         # Tempo:
         tempo = list(datos.columns)[1]  # Esto é unha tupla que contén cellObj
-        tempo2 = []  # Esta lista conterá todos os tempos en orde
-        tempo3 = []  # Esta lista conterá só os tempos solicitados
+        # Lista que contén todos os tempos en orde:
+        tempo2 = []
+        # Lista que contén todos os tempos solicitados:
+        tempo3 = []
+        # Lista que contén todos os índices dos tempos solicitados na lista global,
+        # de xeito que se podan relacionar con outros parámetros:
+        tindex = []
         for cellObj in tempo:
             x = cellObj.value
             tempo2.append(x)
-        print(tempo2)
         tempo2.pop(0)
-        print(tempo2)
         for x in tempo2:
-            if x < Tf and x > Ti:
+            if Tf > x > Ti:
                 tempo3.append(x)
-            elif x > Tf:
-                break
-
-        print(tempo3)  # Esta lista serve para recoller os datos só no intervalo de tempo solicitado
-
-        tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
-        for x in tempo2:
-            if x < Tf and x > Ti:
                 tindex.append(tempo2.index(x))
             elif x > Tf:
                 break
-        print(tindex)
 
         # Variable a analizar
         analito = list(datos.columns)[opcionso1.index(variableo1.get())]
@@ -165,9 +167,7 @@ def MDT():
         for cellObj in analito:
             x = cellObj.value
             analito2.append(x)
-        print(analito2)
         analito2.pop(0)
-        print(analito2)
 
         for x in analito2:
             for n in tindex:
@@ -177,7 +177,6 @@ def MDT():
                     break
                 elif x is None:
                     break
-        print(analito3)
 
         M = round(statistics.mean(analito3), 2)
         median = round(statistics.median(analito3), 2)
@@ -192,7 +191,6 @@ def MDT():
         for cellObj in tempo:
             x = cellObj.value
             tempo2.append(x)
-        print(tempo2)
         tempo2.pop(0)
 
         # Variable a analizar
@@ -201,7 +199,6 @@ def MDT():
         for cellObj in analito:
             x = cellObj.value
             analito2.append(x)
-        print(analito2)
         analito2.pop(0)
 
         M = round(statistics.mean(analito2), 2)
@@ -223,28 +220,25 @@ def grafico():
     if bo2.get() == 0:
         try:
             # Tempo:
-            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]  # Esto é unha tupla que contén cellObj
-            abscisa2 = []  # Esta lista conterá todos os tempos en orde
-            abscisa3 = []  # Esta lista conterá só os tempos solicitados
+            # Esto é unha tupla que contén cellObj:
+            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]
+            # Esta lista conterá todos os tempos en orde:
+            abscisa2 = []
+            # Esta lista conterá só os tempos solicitados:
+            abscisa3 = []
+            # Lista que contén todos os índices dos tempos solicitados na lista global,
+            # de xeito que se podan relacionar con outros parámetros:
+            tindex = []
             for cellObj in abscisa:
                 x = cellObj.value
                 abscisa2.append(x)
-            print(abscisa2)
             abscisa2.pop(0)
-            print(abscisa2)
             for x in abscisa2:
                 if Tf > x > Ti:
                     abscisa3.append(x)
-                elif x > Tf:
-                    break
-
-            tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
-            for x in abscisa2:
-                if Tf > x > Ti:
                     tindex.append(abscisa2.index(x))
                 elif x > Tf:
                     break
-            print(tindex)
 
             # Variable a analizar
             analito = list(datos.columns)[opcionso1.index(variableo1.get())]
@@ -253,9 +247,7 @@ def grafico():
             for cellObj in analito:
                 x = cellObj.value
                 analito2.append(x)
-            print(analito2)
             analito2.pop(0)
-            print(analito2)
 
             for x in analito2:
                 for n in tindex:
@@ -263,20 +255,17 @@ def grafico():
                         analito3.append(x)
                     elif len(analito3) == len(tindex):
                         break
-            print(analito3)
 
             # plot
-            plt.plot(abscisa3, analito3, color='green', linestyle=' ', linewidth=3,
+            plt.plot(abscisa3, analito3, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
-
-            # # setting x and y axis range
-            # plt.ylim(0, 500)
-            # plt.xlim(0, 5000)
 
             # naming the x axis
             plt.xlabel(variablea1.get())
             # naming the y axis
             plt.ylabel(variableo1.get())
+            # Legend
+            plt.legend()
 
             # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get()))
@@ -288,7 +277,6 @@ def grafico():
             for cellObj in abscisa:
                 x = cellObj.value
                 abscisa2.append(x)
-            print(abscisa2)
             abscisa2.pop(0)
 
             # Variable a analizar
@@ -297,45 +285,34 @@ def grafico():
             for cellObj in analito:
                 x = cellObj.value
                 analito2.append(x)
-            print(analito2)
             analito2.pop(0)
 
             # plot
-            plt.plot(abscisa2, analito2, color='green', linestyle=' ', linewidth=3,
+            plt.plot(abscisa2, analito2, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
-            # naming the x axis
             plt.xlabel(variablea1.get())
-            # naming the y axis
             plt.ylabel(variableo1.get())
+            plt.legend()
 
-            # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get()))
     else:
         try:
             # Tempo:
-            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]  # Esto é unha tupla que contén cellObj
-            abscisa2 = []  # Esta lista conterá todos os tempos en orde
-            abscisa3 = []  # Esta lista conterá só os tempos solicitados
+            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]
+            abscisa2 = []
+            abscisa3 = []
+            tindex = []
             for cellObj in abscisa:
                 x = cellObj.value
                 abscisa2.append(x)
-            print(abscisa2)
             abscisa2.pop(0)
-            print(abscisa2)
             for x in abscisa2:
                 if Tf > x > Ti:
                     abscisa3.append(x)
-                elif x > Tf:
-                    break
-
-            tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
-            for x in abscisa2:
-                if Tf > x > Ti:
                     tindex.append(abscisa2.index(x))
                 elif x > Tf:
                     break
-            print(tindex)
 
             # Variables a analizar
             analitoa = list(datos.columns)[opcionso1.index(variableo1.get())]
@@ -344,9 +321,7 @@ def grafico():
             for cellObj in analitoa:
                 x = cellObj.value
                 analitoa2.append(x)
-            print(analitoa2)
             analitoa2.pop(0)
-            print(analitoa2)
 
             for x in analitoa2:
                 for n in tindex:
@@ -354,7 +329,6 @@ def grafico():
                         analitoa3.append(x)
                     elif len(analitoa3) == len(tindex):
                         break
-            print(analitoa3)
 
             analitob = list(datos.columns)[opcionso2.index(variableo2.get())]
             analitob2 = []
@@ -362,9 +336,7 @@ def grafico():
             for cellObj in analitob:
                 x = cellObj.value
                 analitob2.append(x)
-            print(analitob2)
             analitob2.pop(0)
-            print(analitob2)
 
             for x in analitob2:
                 for n in tindex:
@@ -372,21 +344,18 @@ def grafico():
                         analitob3.append(x)
                     elif len(analitob3) == len(tindex):
                         break
-            print(analitob3)
 
             # plot
-            plt.plot(abscisa3, analitoa3, color='green', linestyle=' ', linewidth=3,
+            plt.plot(abscisa3, analitoa3, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
-            plt.plot(abscisa3, analitob3, color='r', linestyle=' ', linewidth=3,
+            plt.plot(abscisa3, analitob3, label=variableo2.get(),linewidth=0,
                      marker='.', markerfacecolor='r', markersize=3)
 
-            # naming the x axis
             plt.xlabel(variablea1.get())
-            # naming the y axis
             plt.ylabel(variableo1.get() + " and " + variableo2.get())
+            plt.legend()
 
-            # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get()) + " and " + variableo2.get())
 
         except:
@@ -396,7 +365,6 @@ def grafico():
             for cellObj in abscisa:
                 x = cellObj.value
                 abscisa2.append(x)
-            print(abscisa2)
             abscisa2.pop(0)
 
             # Variables a analizar
@@ -405,7 +373,6 @@ def grafico():
             for cellObj in analitoa:
                 x = cellObj.value
                 analitoa2.append(x)
-            print(analitoa2)
             analitoa2.pop(0)
 
             analitob = list(datos.columns)[opcionso2.index(variableo2.get())]
@@ -413,22 +380,19 @@ def grafico():
             for cellObj in analitob:
                 x = cellObj.value
                 analitob2.append(x)
-            print(analitob2)
             analitob2.pop(0)
 
             # plot
-            plt.plot(abscisa2, analitoa2, color='green', linestyle=' ', linewidth=3,
+            plt.plot(abscisa2, analitoa2, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
-            plt.plot(abscisa2, analitob2, color='r', linestyle=' ', linewidth=3,
+            plt.plot(abscisa2, analitob2, label=variableo2.get(), linewidth=0,
                      marker='.', markerfacecolor='r', markersize=3)
 
-            # naming the x axis
             plt.xlabel(variablea1.get())
-            # naming the y axis
             plt.ylabel(variableo1.get() + " and " + variableo2.get())
+            plt.legend()
 
-            # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get()) + " and " + variableo2.get())
 
     # function to show the plot
@@ -438,186 +402,148 @@ def grafico():
 # Boxplots
 def boxplot():
     if bv3.get() == 0:
+        print("1 independent variable detected, drawing 1 Boxplot.")
         try:
             # Tempo:
-            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]  # Esto é unha tupla que contén cellObj
-            abscisa2 = []  # Esta lista conterá todos os tempos en orde
-            abscisa3 = []  # Esta lista conterá só os tempos solicitados
+            abscisa = list(datos.columns)[opcionsv1.index(variable1.get())]
+            abscisa2 = []
+            abscisa3 = []
+            tindex = []
             for cellObj in abscisa:
                 x = cellObj.value
                 abscisa2.append(x)
-            print(abscisa2)
             abscisa2.pop(0)
-            print(abscisa2)
             for x in abscisa2:
                 if x < Tf and x > Ti:
                     abscisa3.append(x)
-                elif x > Tf:
-                    break
-
-            tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
-            for x in abscisa2:
-                if x < Tf and x > Ti:
                     tindex.append(abscisa2.index(x))
                 elif x > Tf:
                     break
-            print(tindex)
+            print("Temporal limitation to Variable 1 successful")
 
             # Variable a analizar
-            analito = list(datos.columns)[opcionso1.index(variableo1.get())]
+            analito = list(datos.columns)[opcionsv2.index(variable2.get())]
             analito2 = []
             analito3 = []
             for cellObj in analito:
                 x = cellObj.value
                 analito2.append(x)
-            print(analito2)
             analito2.pop(0)
-            print(analito2)
 
+            print("Applying temporal restraint to Variable 2")
             for x in analito2:
                 for n in tindex:
                     if analito2.index(x) == n and len(analito3) < len(tindex):
                         analito3.append(x)
                     elif len(analito3) == len(tindex):
                         break
-            print(analito3)
-
             sns.boxplot(data=analito3)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
-            # naming the y axis
-            plt.ylabel(variable2.get())
+            # naming the axis
+            plt.xlabel(variable2.get())
 
         except:
-            # Tempo:
-            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]  # Esto é unha tupla que contén cellObj
-            abscisa2 = []  # Esta lista conterá todos os tempos en orde
-            for cellObj in abscisa:
-                x = cellObj.value
-                abscisa2.append(x)
-            print(abscisa2)
-            abscisa2.pop(0)
+            print("No temporal restriction detected.")
 
             # Variable a analizar
-            analito = list(datos.columns)[opcionso1.index(variableo1.get())]
+            analito = list(datos.columns)[opcionsv2.index(variable2.get())]
             analito2 = []
             for cellObj in analito:
                 x = cellObj.value
                 analito2.append(x)
-            print(analito2)
             analito2.pop(0)
+            print("Variable 2 data extracted.")
 
             sns.boxplot(data=analito2)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
-            # naming the y axis
-            plt.ylabel(variable2.get())
+            # naming the axes
+
+            plt.xlabel(variable2.get())
     else:
+        print("2 independent variables detected, drawing 2 Boxplots.")
         try:
             # Tempo:
-            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]  # Esto é unha tupla que contén cellObj
-            abscisa2 = []  # Esta lista conterá todos os tempos en orde
-            abscisa3 = []  # Esta lista conterá só os tempos solicitados
+            abscisa = list(datos.columns)[opcionsv1.index(variable1.get())]
+            abscisa2 = []
+            abscisa3 = []
+            tindex = []
             for cellObj in abscisa:
                 x = cellObj.value
                 abscisa2.append(x)
-            print(abscisa2)
             abscisa2.pop(0)
-            print(abscisa2)
             for x in abscisa2:
                 if x < Tf and x > Ti:
                     abscisa3.append(x)
-                elif x > Tf:
-                    break
-
-            tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
-            for x in abscisa2:
-                if x < Tf and x > Ti:
                     tindex.append(abscisa2.index(x))
                 elif x > Tf:
                     break
-            print(tindex)
 
             # Variables a analizar
-            analitoa = list(datos.columns)[opcionso1.index(variableo1.get())]
+            analitoa = list(datos.columns)[opcionsv2.index(variable2.get())]
             analitoa2 = []
             analitoa3 = []
             for cellObj in analitoa:
                 x = cellObj.value
                 analitoa2.append(x)
-            print(analitoa2)
             analitoa2.pop(0)
-            print(analitoa2)
 
+            print("Applying temporal limitation to Variable 2.")
             for x in analitoa2:
                 for n in tindex:
                     if analitoa2.index(x) == n and len(analitoa3) < len(tindex):
                         analitoa3.append(x)
                     elif len(analitoa3) == len(tindex):
                         break
-            print(analitoa3)
 
-            analitob = list(datos.columns)[opcionso2.index(variableo2.get())]
+            analitob = list(datos.columns)[opcionsv3.index(variable3.get())]
             analitob2 = []
             analitob3 = []
             for cellObj in analitob:
                 x = cellObj.value
                 analitob2.append(x)
-            print(analitob2)
             analitob2.pop(0)
-            print(analitob2)
 
+            print("Applying temporal limitation to Variable 3.")
             for x in analitob2:
                 for n in tindex:
                     if analitob2.index(x) == n and len(analitob3) < len(tindex):
                         analitob3.append(x)
                     elif len(analitob3) == len(tindex):
                         break
-            print(analitob3)
 
             df = pd.DataFrame(list(zip(analitoa3, analitob3)))
+            df.columns = [str(variable2.get()), str(variable3.get())]
 
             sns.boxplot(data=df)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
             # naming the y axis
             plt.ylabel(variable2.get() + " and " + variable3.get())
+
         except:
-            # Tempo:
-            abscisa = list(datos.columns)[opcionsa1.index(variablea1.get())]  # Esto é unha tupla que contén cellObj
-            abscisa2 = []  # Esta lista conterá todos os tempos en orde
-            for cellObj in abscisa:
-                x = cellObj.value
-                abscisa2.append(x)
-            print(abscisa2)
-            abscisa2.pop(0)
+            print("No temporal restriction detected.")
 
             # Variables a analizar
-            analitoa = list(datos.columns)[opcionso1.index(variableo1.get())]
+            analitoa = list(datos.columns)[opcionsv2.index(variable2.get())]
             analitoa2 = []
             for cellObj in analitoa:
                 x = cellObj.value
                 analitoa2.append(x)
-            print(analitoa2)
             analitoa2.pop(0)
+            print("Variable 2 data acquired.")
 
-            analitob = list(datos.columns)[opcionso2.index(variableo2.get())]
+            analitob = list(datos.columns)[opcionsv3.index(variable3.get())]
             analitob2 = []
             for cellObj in analitob:
                 x = cellObj.value
                 analitob2.append(x)
-            print(analitob2)
             analitob2.pop(0)
+            print("Variable 3 data obtained.")
 
             df = pd.DataFrame(list(zip(analitoa2, analitob2)))
+            df.columns = [str(variable2.get()), str(variable3.get())]
 
             sns.boxplot(data=df)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
             # naming the y axis
             plt.ylabel(variable2.get() + " and " + variable3.get())
     # function to show the plot
@@ -668,7 +594,6 @@ label_file_explorer = Label(top_frame,
                             fg="blue")
 
 # Etiqueta co logo do GTE
-dirname = os.path.dirname(__file__)
 photogte = PhotoImage(file=os.path.join(dirname, "imaxes", "gte2.png"))
 
 photoimagegte = photogte.subsample(3, 3)

@@ -60,10 +60,12 @@ def time():
     try:
         Ti = float(Tempiniw.get())
         Tf = float(Tempfinw.get())
+        print("Time set to interval between " + str(Ti) + " and " + str(Tf) + " s.")
 
     except:
         Ti = "tiempo1"
         Tf = "tiempo2"
+        print("Time restrictions removed.")
 
 
 # Media e desv. típica no rango de tempos
@@ -86,7 +88,7 @@ def MDT():
         tempo2 = []  # Esta segunda lista serve para recoller os datos só no intervalo de tempo solicitado
         tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
         for x in tempo1:
-            if x < Tf and x > Ti:
+            if Tf > x > Ti:
                 tempo2.append(x)
                 tindex.append(tempo1.index(x))
 
