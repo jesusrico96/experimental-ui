@@ -349,7 +349,7 @@ def grafico():
             plt.plot(abscisa3, analitoa3, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
-            plt.plot(abscisa3, analitob3, label=variableo2.get(),linewidth=0,
+            plt.plot(abscisa3, analitob3, label=variableo2.get(), linewidth=0,
                      marker='.', markerfacecolor='r', markersize=3)
 
             plt.xlabel(variablea1.get())
@@ -413,13 +413,15 @@ def boxplot():
                 x = cellObj.value
                 abscisa2.append(x)
             abscisa2.pop(0)
+
+            print("Applying temporal restraint to X Axis")
             for x in abscisa2:
-                if x < Tf and x > Ti:
+                if Tf > x > Ti:
                     abscisa3.append(x)
                     tindex.append(abscisa2.index(x))
                 elif x > Tf:
                     break
-            print("Temporal limitation to Variable 1 successful")
+            print("Temporal limitation to X Axis successful")
 
             # Variable a analizar
             analito = list(datos.columns)[opcionsv2.index(variable2.get())]
@@ -430,13 +432,15 @@ def boxplot():
                 analito2.append(x)
             analito2.pop(0)
 
-            print("Applying temporal restraint to Variable 2")
+            print("Applying temporal restraint to Y Axis")
             for x in analito2:
                 for n in tindex:
                     if analito2.index(x) == n and len(analito3) < len(tindex):
                         analito3.append(x)
                     elif len(analito3) == len(tindex):
                         break
+            print("Temporal limitation to Y Axis successful")
+
             sns.boxplot(data=analito3)
 
             # naming the axis
@@ -471,12 +475,14 @@ def boxplot():
                 x = cellObj.value
                 abscisa2.append(x)
             abscisa2.pop(0)
+            print("Applying temporal restraint to X Axis")
             for x in abscisa2:
-                if x < Tf and x > Ti:
+                if Tf > x > Ti:
                     abscisa3.append(x)
                     tindex.append(abscisa2.index(x))
                 elif x > Tf:
                     break
+            print("Temporal limitation to X Axis successful")
 
             # Variables a analizar
             analitoa = list(datos.columns)[opcionsv2.index(variable2.get())]
@@ -487,13 +493,14 @@ def boxplot():
                 analitoa2.append(x)
             analitoa2.pop(0)
 
-            print("Applying temporal limitation to Variable 2.")
+            print("Applying temporal limitation to Y1 Axis.")
             for x in analitoa2:
                 for n in tindex:
                     if analitoa2.index(x) == n and len(analitoa3) < len(tindex):
                         analitoa3.append(x)
                     elif len(analitoa3) == len(tindex):
                         break
+            print("Temporal limitation to Y1 Axis successful")
 
             analitob = list(datos.columns)[opcionsv3.index(variable3.get())]
             analitob2 = []
@@ -503,13 +510,14 @@ def boxplot():
                 analitob2.append(x)
             analitob2.pop(0)
 
-            print("Applying temporal limitation to Variable 3.")
+            print("Applying temporal limitation to Y2 Axis.")
             for x in analitob2:
                 for n in tindex:
                     if analitob2.index(x) == n and len(analitob3) < len(tindex):
                         analitob3.append(x)
                     elif len(analitob3) == len(tindex):
                         break
+            print("Temporal limitation to Y2 Axis successful")
 
             df = pd.DataFrame(list(zip(analitoa3, analitob3)))
             df.columns = [str(variable2.get()), str(variable3.get())]

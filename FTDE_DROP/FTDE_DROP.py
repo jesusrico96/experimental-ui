@@ -1,15 +1,10 @@
-
 from tkinter import *
-# matplotlib
 import matplotlib.pyplot as plt
 import statistics
 import seaborn as sns
-
 import pandas as pd
 from PIL import *
 import os
-
-# Explorador de arquivos
 from tkinter import filedialog
 
 global M
@@ -20,6 +15,7 @@ M = 0
 SD = 0
 median = 0
 MAD = 0
+
 
 def browseFiles():
     global filename
@@ -72,14 +68,12 @@ def time():
 def MDT():
     file = open(filename, 'r')
     lines = file.readlines()
-    # print(lines)
     del lines[0]
     try:
         # Tempo:
         tempo = []
         for x in lines:
             tempo.append(x.split('\t')[1])  # Extrae os tempos
-            # print(tempo)
         tempo1 = []  # Esta lista incluirá os datos de tempo con puntos en vez de comas
         for string in tempo:
             new_stringt = string.replace(",", ".")
@@ -117,9 +111,8 @@ def MDT():
         # Tempo:
         tempo = []
         for x in lines:
-            tempo.append(x.split('\t')[1])  # Extrae os tempos
-            # print(tempo)
-        tempo1 = []  # Esta lista incluirá os datos de tempo con puntos en vez de comas
+            tempo.append(x.split('\t')[1])
+        tempo1 = []
         for string in tempo:
             new_stringt = string.replace(",", ".")
             new_stringt1 = float(new_stringt)
@@ -153,7 +146,6 @@ def MDT():
 def grafico():
     file = open(filename, 'r')
     lines = file.readlines()
-    # print(lines)
     del lines[0]
 
     # Se a checkbox está desmarcada, fai gráficos só cunha variable en Y. Dentro de cada tipo de gráfico
@@ -164,9 +156,8 @@ def grafico():
             # Tempo:
             abscisa = []
             for x in lines:
-                abscisa.append(x.split('\t')[opcionsa1.index(variablea1.get())])  # Extrae os tempos
-                # print(tempo)
-            abscisa1 = []  # Esta lista incluirá os datos de tempo con puntos en vez de comas
+                abscisa.append(x.split('\t')[opcionsa1.index(variablea1.get())])
+            abscisa1 = []
             for string in abscisa:
                 new_stringt = string.replace(",", ".")
                 new_stringt1 = float(new_stringt)
@@ -174,7 +165,7 @@ def grafico():
             abscisa2 = []  # Esta segunda lista serve para recoller os datos só no intervalo de tempo solicitado
             tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
             for x in abscisa1:
-                if x < Tf and x > Ti:
+                if Tf > x > Ti:
                     abscisa2.append(x)
                     tindex.append(abscisa1.index(x))
 
@@ -193,17 +184,18 @@ def grafico():
                     if analito1.index(x) == n and len(analito2) < len(tindex):
                         analito2.append(x)
 
-
             file.close()
 
             # plot
-            plt.plot(abscisa2, analito2, color='green', linestyle=' ', linewidth=3,
+            plt.plot(abscisa2, analito2, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
             # naming the x axis
             plt.xlabel(variablea1.get())
             # naming the y axis
             plt.ylabel(variableo1.get())
+            # Legend
+            plt.legend()
 
             # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get()))
@@ -213,9 +205,8 @@ def grafico():
             # Tempo:
             tempo = []
             for x in lines:
-                tempo.append(x.split('\t')[opcionsa1.index(variablea1.get())])  # Extrae os tempos
-                # print(tempo)
-            tempo1 = []  # Esta lista incluirá os datos de tempo con puntos en vez de comas
+                tempo.append(x.split('\t')[opcionsa1.index(variablea1.get())])
+            tempo1 = []
             for string in tempo:
                 new_stringt = string.replace(",", ".")
                 new_stringt1 = float(new_stringt)
@@ -234,15 +225,13 @@ def grafico():
             file.close()
 
             # plot
-            plt.plot(tempo1, analito1, color='green', linestyle=' ', linewidth=3,
+            plt.plot(tempo1, analito1, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
-            # naming the x axis
             plt.xlabel(variablea1.get())
-            # naming the y axis
             plt.ylabel(variableo1.get())
+            plt.legend()
 
-            # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get()))
 
     # Se a checkbox está marcada, fai o mesmo que antes pero con dúas variables no eixo Y.
@@ -252,20 +241,18 @@ def grafico():
             # Tempo:
             abscisa = []
             for x in lines:
-                abscisa.append(x.split('\t')[opcionsa1.index(variablea1.get())])  # Extrae os tempos
-                # print(tempo)
-            abscisa1 = []  # Esta lista incluirá os datos de tempo con puntos en vez de comas
+                abscisa.append(x.split('\t')[opcionsa1.index(variablea1.get())])
+            abscisa1 = []
             for string in abscisa:
                 new_stringt = string.replace(",", ".")
                 new_stringt1 = float(new_stringt)
                 abscisa1.append(new_stringt1)
-            abscisa2 = []  # Esta segunda lista serve para recoller os datos só no intervalo de tempo solicitado
-            tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
+            abscisa2 = []
+            tindex = []
             for x in abscisa1:
-                if x < Tf and x > Ti:
+                if Tf > x > Ti:
                     abscisa2.append(x)
                     tindex.append(abscisa1.index(x))
-
 
             # Variables a analizar
             analitoa = []
@@ -296,22 +283,19 @@ def grafico():
                     if analitob1.index(x) == n and len(analitob2) < len(tindex):
                         analitob2.append(x)
 
-
             file.close()
 
             # plot
-            plt.plot(abscisa2, analitoa2, color='green', linestyle=' ', linewidth=3,
+            plt.plot(abscisa2, analitoa2, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
-            plt.plot(abscisa2, analitob2, color='red', linestyle=' ', linewidth=3,
+            plt.plot(abscisa2, analitob2, label=variableo2.get(), linewidth=0,
                      marker='.', markerfacecolor='red', markersize=3)
 
-            # naming the x axis
             plt.xlabel(variablea1.get())
-            # naming the y axis
             plt.ylabel(variableo1.get() + " and " + variableo2.get())
+            plt.legend()
 
-            # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get() + " and " + variableo2.get()))
 
 
@@ -319,9 +303,8 @@ def grafico():
             # Tempo:
             tempo = []
             for x in lines:
-                tempo.append(x.split('\t')[opcionsa1.index(variablea1.get())])  # Extrae os tempos
-                # print(tempo)
-            tempo1 = []  # Esta lista incluirá os datos de tempo con puntos en vez de comas
+                tempo.append(x.split('\t')[opcionsa1.index(variablea1.get())])
+            tempo1 = []
             for string in tempo:
                 new_stringt = string.replace(",", ".")
                 new_stringt1 = float(new_stringt)
@@ -349,18 +332,16 @@ def grafico():
             file.close()
 
             # plot
-            plt.plot(tempo1, analitoa1, color='green', linestyle=' ', linewidth=3,
+            plt.plot(tempo1, analitoa1, label=variableo1.get(), linewidth=0,
                      marker='.', markerfacecolor='blue', markersize=3)
 
-            plt.plot(tempo1, analitob1, color='red', linestyle=' ', linewidth=3,
+            plt.plot(tempo1, analitob1, label=variableo2.get(), linewidth=0,
                      marker='.', markerfacecolor='red', markersize=3)
 
-            # naming the x axis
             plt.xlabel(variablea1.get())
-            # naming the y axis
             plt.ylabel(variableo1.get() + " and " + variableo2.get())
+            plt.legend()
 
-            # giving a title to my graph
             plt.title(str(variablea1.get()) + " vs. " + str(variableo1.get() + " and " + variableo2.get()))
 
     # function to show the plot
@@ -371,26 +352,30 @@ def grafico():
 def boxplot():
     file = open(filename, 'r')
     lines = file.readlines()
-    # print(lines)
     del lines[0]
     if bv3.get() == 0:
+        print("1 independent variable detected, drawing 1 Boxplot.")
         try:
             # Tempo:
             abscisa = []
             for x in lines:
-                abscisa.append(x.split('\t')[opcionsv1.index(variable1.get())])  # Extrae os tempos
-                # print(tempo)
-            abscisa1 = []  # Esta lista incluirá os datos de tempo con puntos en vez de comas
+                abscisa.append(x.split('\t')[opcionsv1.index(variable1.get())])
+            abscisa1 = []
             for string in abscisa:
                 new_stringt = string.replace(",", ".")
                 new_stringt1 = float(new_stringt)
                 abscisa1.append(new_stringt1)
-            abscisa2 = []  # Esta segunda lista serve para recoller os datos só no intervalo de tempo solicitado
-            tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
+            abscisa2 = []
+            tindex = []
+
+            print("Applying temporal restraint to X Axis")
             for x in abscisa1:
-                if x < Tf and x > Ti:
+                if Tf > x > Ti:
                     abscisa2.append(x)
                     tindex.append(abscisa1.index(x))
+                elif x > Tf:
+                    break
+            print("Temporal limitation to X Axis successful")
 
             # Variable a analizar
             analito = []
@@ -401,23 +386,28 @@ def boxplot():
                 new_stringana = string.replace(",", ".")
                 new_stringana1 = float(new_stringana)
                 analito1.append(new_stringana1)
+
+            print("Applying temporal restraint to Y Axis")
             analito2 = []
             for x in analito1:
                 for n in tindex:
                     if analito1.index(x) == n and len(analito2) < len(tindex):
                         analito2.append(x)
+                    elif len(analito2) == len(tindex):
+                        break
+            print("Temporal limitation to Y Axis successful")
 
             sns.boxplot(data=analito2)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
-            # naming the y axis
-            plt.ylabel(variable2.get())
+            # naming the axis
+            plt.xlabel(variable2.get())
 
             plt.show()
             file.close()
 
         except:
+            print("No temporal restriction detected.")
+
             # Variable a analizar
             analito = []
             for x in lines:
@@ -428,16 +418,16 @@ def boxplot():
                 new_stringana1 = float(new_stringana)
                 analito1.append(new_stringana1)
 
+            print("Y Axis data extracted.")
+
             sns.boxplot(data=analito1)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
-            # naming the y axis
-            plt.ylabel(variable2.get())
+            plt.xlabel(variable2.get())
 
             plt.show()
             file.close()
     else:
+        print("2 independent variables detected, drawing 2 Boxplots.")
         try:
             # Tempo:
             abscisa = []
@@ -449,12 +439,15 @@ def boxplot():
                 new_stringt = string.replace(",", ".")
                 new_stringt1 = float(new_stringt)
                 abscisa1.append(new_stringt1)
+
+            print("Applying temporal restraint to X Axis")
             abscisa2 = []  # Esta segunda lista serve para recoller os datos só no intervalo de tempo solicitado
             tindex = []  # Lista de índices dos datos de interese na lista global, para poder relacionalos con outros parámetros
             for x in abscisa1:
                 if x < Tf and x > Ti:
                     abscisa2.append(x)
                     tindex.append(abscisa1.index(x))
+            print("Temporal limitation to X Axis successful")
 
             # Variables a analizar
             analitoa = []
@@ -465,11 +458,14 @@ def boxplot():
                 new_stringana = string.replace(",", ".")
                 new_stringana1 = float(new_stringana)
                 analitoa1.append(new_stringana1)
+
+            print("Applying temporal restraint to Y1 Axis")
             analitoa2 = []
             for x in analitoa1:
                 for n in tindex:
                     if analitoa1.index(x) == n and len(analitoa2) < len(tindex):
                         analitoa2.append(x)
+            print("Temporal limitation to Y1 Axis successful")
 
             analitob = []
             for x in lines:
@@ -479,25 +475,27 @@ def boxplot():
                 new_stringana = string.replace(",", ".")
                 new_stringana1 = float(new_stringana)
                 analitob1.append(new_stringana1)
+
+            print("Applying temporal restraint to Y2 Axis")
             analitob2 = []
             for x in analitob1:
                 for n in tindex:
                     if analitob1.index(x) == n and len(analitob2) < len(tindex):
                         analitob2.append(x)
+            print("Temporal limitation to Y2 Axis successful")
 
             df = pd.DataFrame(list(zip(analitoa2, analitob2)))
 
             sns.boxplot(data=df)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
-            # naming the y axis
             plt.ylabel(variable2.get() + " and " + variable3.get())
 
             plt.show()
             file.close()
 
         except:
+            print("No temporal restriction detected.")
+
             # Variables a analizar
             analitoa = []
             for x in lines:
@@ -507,6 +505,7 @@ def boxplot():
                 new_stringana = string.replace(",", ".")
                 new_stringana1 = float(new_stringana)
                 analitoa1.append(new_stringana1)
+            print("Variable 2 data acquired.")
 
             analitob = []
             for x in lines:
@@ -516,14 +515,12 @@ def boxplot():
                 new_stringana = string.replace(",", ".")
                 new_stringana1 = float(new_stringana)
                 analitob1.append(new_stringana1)
+            print("Variable 3 data obtained.")
 
             df = pd.DataFrame(list(zip(analitoa1, analitob1)))
 
             sns.boxplot(data=df)
 
-            # naming the x axis
-            plt.xlabel(variable1.get())
-            # naming the y axis
             plt.ylabel(variable2.get() + " and " + variable3.get())
 
             plt.show()
@@ -594,8 +591,8 @@ button_exit = Button(low_frame,
 
 # Etiqueta autoría
 label_auth = Label(low_frame,
-                 text="GNU-GPL   2021   Juan Jesús Rico Fuentes",
-                 fg="black")
+                   text="GNU-GPL   2021   Juan Jesús Rico Fuentes",
+                   fg="black")
 
 # Botón de guillotina
 photo = PhotoImage(
@@ -648,8 +645,8 @@ label_Mean = Label(framea,
 
 # Etiqueta coa mediana
 label_Median = Label(framea,
-                   text="Median:" + " " + str(median),
-                   fg="blue")
+                     text="Median:" + " " + str(median),
+                     fg="blue")
 
 # Etiqueta coa standard dev.
 label_SD = Label(framea,
@@ -658,8 +655,8 @@ label_SD = Label(framea,
 
 # Etiqueta coa MAD
 label_MAD = Label(framea,
-                 text="Mean Abs. Dev.:" + " " + str(MAD),
-                 fg="blue")
+                  text="Mean Abs. Dev.:" + " " + str(MAD),
+                  fg="blue")
 
 # Botón de Gráficos
 button_graph = Button(framea,
