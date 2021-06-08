@@ -1,7 +1,8 @@
+import sys
+import os.path
 import datetime
 from tkinter import *
 from openpyxl import *
-import os
 import pandas as pd
 from datetime import *
 # Explorador de arquivos
@@ -101,12 +102,14 @@ def frankenstein():
     mr = my_sheet.max_row
     mc = my_sheet.max_column
 
+    print("Extracting File 1")
     for i in range(1, mr + 1):
         for j in range(1, mc + 1):
             c = my_sheet.cell(row=i, column=j)
             datos.cell(row=i, column=j).value = c.value
 
     wb.save("File1.xls")
+    print("File 1 Extracted!")
 
     # Abrir o arquivo 2 cos datos e un workbook paralelo de destino dos mesmos
     my_file2 = load_workbook(filename=filename2)
@@ -120,12 +123,14 @@ def frankenstein():
     mr2 = my_sheet2.max_row
     mc2 = my_sheet2.max_column
 
+    print("Extracting File 2")
     for i in range(1, mr2 + 1):
         for j in range(1, mc2 + 1):
             c2 = my_sheet2.cell(row=i, column=j)
             datos2.cell(row=i, column=j).value = c2.value
 
     wb2.save("File2.xls")
+    print("File 2 Extracted!")
 
     # Abrir o arquivo 3 cos datos e un workbook paralelo de destino dos mesmos
     if filename3 != 0:
@@ -140,14 +145,15 @@ def frankenstein():
         mr3 = my_sheet3.max_row
         mc3 = my_sheet3.max_column
 
+        print("Extracting File 3")
         for i in range(1, mr3 + 1):
             for j in range(1, mc3 + 1):
                 c3 = my_sheet3.cell(row=i, column=j)
                 datos3.cell(row=i, column=j).value = c3.value
-        wb3.save("File3.xls")
+        print("File 3 Extracted!")
     else:
         wb3 = Workbook()
-        wb3.save("File3.xls")
+    wb3.save("File3.xls")
 
     # Abrir o arquivo 4 cos datos e un workbook paralelo de destino dos mesmos
     if filename4 != 0:
@@ -162,14 +168,15 @@ def frankenstein():
         mr4 = my_sheet4.max_row
         mc4 = my_sheet4.max_column
 
+        print("Extracting File 4")
         for i in range(1, mr4 + 1):
             for j in range(1, mc4 + 1):
                 c4 = my_sheet4.cell(row=i, column=j)
                 datos4.cell(row=i, column=j).value = c4.value
-        wb4.save("File4.xls")
+        print("File 4 Extracted!")
     else:
         wb4 = Workbook()
-        wb4.save("File4.xls")
+    wb4.save("File4.xls")
 
     # Abrir o arquivo 5 cos datos e un workbook paralelo de destino dos mesmos
     if filename5 != 0:
@@ -184,14 +191,15 @@ def frankenstein():
         mr5 = my_sheet5.max_row
         mc5 = my_sheet5.max_column
 
+        print("Extracting File 5")
         for i in range(1, mr5 + 1):
             for j in range(1, mc5 + 1):
                 c5 = my_sheet5.cell(row=i, column=j)
                 datos5.cell(row=i, column=j).value = c5.value
-        wb5.save("File5.xls")
+        print("File 5 Extracted!")
     else:
         wb5 = Workbook()
-        wb5.save("File5.xls")
+    wb5.save("File5.xls")
 
     # Na carpeta do script, lista os arquivos que contén:
     cwd = os.path.abspath('')
@@ -199,9 +207,11 @@ def frankenstein():
 
     # Dos arquivos listados, une os .xls que se crearon antes entre si:
     df = pd.DataFrame()
+    print("Merging files...")
     for file in files:
         if file.endswith('.xls'):
             df = df.append(pd.read_excel(file), ignore_index=True)
+    print("Files merged!")
 
     # Finalmente, escribe un .xlsx con todos os datos:
     df.to_excel("Frankenstein.xlsx", index=False)
@@ -210,12 +220,12 @@ def frankenstein():
     # Primeiro, cárgase o arquivo xerado
     frk = load_workbook(filename="Frankenstein.xlsx")
     frksh = frk.worksheets[0]
-    # print(frksh.cell(2,1).value)
 
     mrfrk = frksh.max_row
 
     # Prepárase un bucle que reste dous valores de tempo e lles sume o valor anterior a eles
     # Deste xeito úsase a timestamp de cada dato para construir o marco temporal global
+    print("Creating global timeframe...")
     frksh.cell(1, 69).value = "Tiempo corr."
     frksh.cell(2, 69).value = 1.0
     frksh.cell(3, 69).value = 2.0
@@ -230,6 +240,7 @@ def frankenstein():
 
     # Móvese o marco global á columna axeitada
     frksh.move_range("BQ2:BQ7500", cols=-67)
+    print("Global timeframe created!")
 
     # Pechar os arquivos orixinais e gardar un Excel cos datos de traballo
     frk.save(filename="Frankenstein.xlsx")
@@ -333,10 +344,7 @@ button_frankenstein = Button(top_frame2,
                              image=photoimage,
                              command=frankenstein)
 
-# Grid method is chosen for placing
-# the widgets at respective positions
-# in a table like structure by
-# specifying rows and columns
+# Grid
 
 label_file_explorer.grid(column=1, row=1, columnspan=3)
 
