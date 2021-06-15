@@ -1,7 +1,10 @@
+import sys
 import os.path
 import openpyxl as opx
 from tkinter import *
 import pandas as pd
+# Explorador de arquivos
+from tkinter import filedialog
 
 
 def converter():
@@ -35,6 +38,7 @@ def converter():
 
             # Contar filas e columnas do arquivo
             mr = my_sheet.max_row
+            mc = my_sheet.max_column
 
             # Corrección de gases
             my_sheet.cell(1, 23).value = "NO (ppm) corr"
