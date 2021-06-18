@@ -65,10 +65,11 @@ def converter():
 
             my_file = open(file)
             df = pd.read_csv(my_file, sep="\t", decimal=',', header=0)
-            df.to_excel(file+".xlsx")
+            file2 = file.replace('.lvm', '')
+            df.to_excel(file2+".xlsx")
             my_file.close()
 
-            my_file = opx.load_workbook(filename=file+".xlsx")
+            my_file = opx.load_workbook(filename=file2+".xlsx")
             my_sheet = my_file.worksheets[0]
             my_sheet.delete_cols(28, 8)
             my_sheet.delete_cols(20)
@@ -110,7 +111,7 @@ def converter():
             my_sheet.delete_cols(13, 2)
             my_sheet.delete_cols(10, 2)
 
-            my_file.save(filename=file+".xlsx")
+            my_file.save(filename=file2+".xlsx")
     print("Files converted!")
 
 

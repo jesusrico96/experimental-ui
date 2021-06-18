@@ -21,10 +21,6 @@ def browseFiles1():
                                            title="Escolle un arquivo inicial",
                                            filetypes=(("Ficheiro de Excel",
                                                        "*.xlsx"),
-                                                      ("Datos de LabView",
-                                                       "*.lvm*"),
-                                                      ("Ficheiros de texto",
-                                                       "*.txt*"),
                                                       ("Todos os formatos",
                                                        "*.*")))
 
@@ -39,10 +35,6 @@ def browseFiles2():
                                            title="Escolle un arquivo 2",
                                            filetypes=(("Ficheiro de Excel",
                                                        "*.xlsx"),
-                                                      ("Datos de LabView",
-                                                       "*.lvm*"),
-                                                      ("Ficheiros de texto",
-                                                       "*.txt*"),
                                                       ("Todos os formatos",
                                                        "*.*")))
 
@@ -53,10 +45,6 @@ def browseFiles3():
                                            title="Escolle un arquivo 3",
                                            filetypes=(("Ficheiro de Excel",
                                                        "*.xlsx"),
-                                                      ("Datos de LabView",
-                                                       "*.lvm*"),
-                                                      ("Ficheiros de texto",
-                                                       "*.txt*"),
                                                       ("Todos os formatos",
                                                        "*.*")))
 
@@ -67,10 +55,6 @@ def browseFiles4():
                                            title="Escolle un arquivo 4",
                                            filetypes=(("Ficheiro de Excel",
                                                        "*.xlsx"),
-                                                      ("Datos de LabView",
-                                                       "*.lvm*"),
-                                                      ("Ficheiros de texto",
-                                                       "*.txt*"),
                                                       ("Todos os formatos",
                                                        "*.*")))
 
@@ -81,10 +65,6 @@ def browseFiles5():
                                            title="Escolle un arquivo 5",
                                            filetypes=(("Ficheiro de Excel",
                                                        "*.xlsx"),
-                                                      ("Datos de LabView",
-                                                       "*.lvm*"),
-                                                      ("Ficheiros de texto",
-                                                       "*.txt*"),
                                                       ("Todos os formatos",
                                                        "*.*")))
 
